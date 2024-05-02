@@ -5,8 +5,8 @@ from sys import exit
 width = 800
 height = 600
 framerate = 60
-test_button = Button('red', 'blue', 50, 100, 100, 200, button_event= print)
-test_button2 = Button('blue', 'red', 200, 300, 100, 200, button_event= lambda str: print(f"{str} 2") )
+test_button2 = Button('blue', 'red', 200, 300, 100, 200, button_event= lambda : print('clicked'))
+test_button = Button('red', 'blue', 50, 100, 100, 200, True, button_event= test_button2.activate)
 buttons = [test_button, test_button2]
 
 pygame.init()
@@ -24,8 +24,8 @@ while True:
         if event.type == pygame.MOUSEBUTTONUP:
             pos = pygame.mouse.get_pos()
             for b in buttons:
-                if b.rect.collidepoint(pos):
-                    b.button_event('clicked')   
+                if b.active and b.rect.collidepoint(pos):
+                    b.button_event()
     screen.fill("dark grey")
     for b in buttons:
         b.draw(screen)
