@@ -1,10 +1,12 @@
 import pygame
 from button import Button
+from colour_themes import Button_Theme
 from sys import exit
 
 width = 800
 height = 600
 framerate = 60
+red_theme = Button_Theme('red', 'grey', 'burgandy', 'black', 'black', 'dark grey')
 
 pygame.init()
 screen = pygame.display.set_mode((width, height))
@@ -15,8 +17,8 @@ clock = pygame.time.Clock()
 test_surface = pygame.Surface((400, 300))
 test_surface.fill('Red')
 game_font = pygame.font.Font(None, 36)
-test_button2 = Button('blue', 'red', 200, 300, 100, 200, game_font, text = "hello again", button_event= lambda : print('clicked'))
-test_button = Button('red', 'blue', 50, 100, 100, 200, game_font, True, text= "hello", button_event= test_button2.activate)
+test_button2 = Button(red_theme, 200, 300, 100, 200, game_font, text = "hello again", button_event= lambda : print('clicked'))
+test_button = Button(red_theme, 50, 100, 100, 200, game_font, True, text= "hello", button_event= test_button2.activate)
 buttons = [test_button, test_button2]
 
 while True:
