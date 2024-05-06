@@ -1,9 +1,10 @@
 
 class Resource():
-    def __init__(self, name, max = None):
+    def __init__(self, name, max = None, regen = 0):
         self.name = name
         self.amount = 0
         self.max = max
+        self.regen = regen
     
     def __add__(self, increase):
         if self.max is not None:
@@ -20,5 +21,11 @@ class Resource():
     
     def __str__(self):
         if self.max is not None:
-            return f"{self.name}: {self.amount}/{self.max}"
-        return f"{self.name}: {self.amount}"
+            return f"{self.name}: {int(self.amount)}/{self.max}"
+        return f"{self.name}: {int(self.amount)}"
+    
+    def tick(self):
+        self + self.regen
+
+    def can_spend(self, decrease):
+        return decrease < self.amount

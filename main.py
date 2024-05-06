@@ -3,6 +3,7 @@ from graphics.button import Button
 from graphics.colour_themes import Button_Theme
 from graphics.res_list import Res_List
 from logic.resource import Resource
+from logic.event import Event
 from sys import exit
 
 width = 800
@@ -23,13 +24,18 @@ test_surface.fill('Red')
 button_font = pygame.font.Font(None, 36)
 list_font = pygame.font.Font(None, 18)
 
+buttons = []
 res_gold = Resource('gold', 100)
-res_potatoes = Resource('potatoes', 10)
-res_list1 = Res_List([res_gold, res_potatoes], 5, 5, 100, height - 5, 'grey', list_font, 0, 'black')
+res_potatoes = Resource('potatoes', 10, 0.01)
+res_list1 = Res_List([res_gold, res_potatoes], 5, 5, 100, screen.get_height() - 10, 'grey', list_font, 0, 'black')
 
-test_button2 = Button(red_theme, 115, 120, 100, 200, button_font, text = "hello again", button_event= lambda : res_gold + 1)
-test_button = Button(blue_theme, 115, 10, 100, 200, button_font, True, text= "hello", button_event= test_button2.activate)
-buttons = [test_button, test_button2]
+test_button0 = Button(blue_theme, 115, 10, 100, 200, button_font, parent= buttons, text= "hello")
+test_button1 = Button(red_theme, 115, 120, 100, 200, button_font, parent= buttons, text = "hello again")
+event0 = Event(lambda : test_button1.activate())
+event1 = Event(lambda : res_gold + 1, cost= [(res_potatoes, 1)])
+test_button0.button_event = event0
+test_button1.button_event = event1
+buttons.append(test_button0)
 
 def main():
     while True:
@@ -40,21 +46,23 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 for b in buttons:
-                    if b.active and b.rect.collidepoint(pos):
+                    if b.rect.collidepoint(pos):
                         b.clicked = True
             if event.type == pygame.MOUSEBUTTONUP:
                 pos = pygame.mouse.get_pos()
                 for b in buttons:
                     b.clicked = False
-                    if b.active and b.rect.collidepoint(pos):
+                    if b.rect.collidepoint(pos):
                         b.button_event()
             if event.type == pygame.MOUSEMOTION:
                 pos = pygame.mouse.get_pos()
                 for b in buttons:
-                    if b.active and b.rect.collidepoint(pos):
+                    if b.rect.collidepoint(pos):
                         b.hovered = True
                     else:
                         b.hovered = False
+        for r in res_list1.list:
+            r.tick()
         screen.fill("dark grey")
         res_list1.draw(screen)
         for b in buttons:

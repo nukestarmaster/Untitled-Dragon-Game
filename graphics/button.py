@@ -1,26 +1,23 @@
 import pygame
 
 class Button():
-    def __init__(self, colour_theme, x, y, h, w, font, active = False, parent = None, text = '', button_event = None):
+    def __init__(self, colour_theme, x, y, h, w, font, button_event = None, parent = None, text = ''):
         self.colour_theme = colour_theme
         self.rect = pygame.Rect(x, y, w, h)
         self.border = pygame.Rect(x - 2, y - 2, w + 4, h + 4)
         self.font = font
-        self.active = active
         self.hovered = False
         self.clicked = False
         self.parent = parent
         self.text = text
         self.text_image = self.font.render(self.text, 1, self.colour_theme.text)
         self.button_event = button_event
-        if self.parent is not None:
-            parent.add_child(self)
 
     def draw(self, win):
-        if not self.active:
-            return
         colour = self.colour_theme.active
-        if self.clicked:
+        if not self.button_event.valid():
+            colour = self.colour_theme.inactive
+        elif self.clicked:
             colour = self.colour_theme.click
         elif self.hovered:
             colour = self.colour_theme.hover
@@ -32,6 +29,7 @@ class Button():
         self.button_event()
 
     def activate(self):
-        self.active = True
+        if self not in self.parent:
+            self.parent.append(self)
 
     
