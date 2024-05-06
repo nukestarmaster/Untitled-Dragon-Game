@@ -1,6 +1,8 @@
 import pygame
-from button import Button
-from colour_themes import Button_Theme
+from graphics.button import Button
+from graphics.colour_themes import Button_Theme
+from graphics.res_list import Res_List
+from logic.resource import Resource
 from sys import exit
 
 width = 800
@@ -17,9 +19,16 @@ clock = pygame.time.Clock()
 
 test_surface = pygame.Surface((400, 300))
 test_surface.fill('Red')
-game_font = pygame.font.Font(None, 36)
-test_button2 = Button(red_theme, 200, 300, 100, 200, game_font, text = "hello again", button_event= lambda : print('clicked'))
-test_button = Button(blue_theme, 50, 100, 100, 200, game_font, True, text= "hello", button_event= test_button2.activate)
+
+button_font = pygame.font.Font(None, 36)
+list_font = pygame.font.Font(None, 18)
+
+res_gold = Resource('gold', 100)
+res_potatoes = Resource('potatoes', 10)
+res_list1 = Res_List([res_gold, res_potatoes], 5, 5, 100, height - 5, 'grey', list_font, 0, 'black')
+
+test_button2 = Button(red_theme, 115, 120, 100, 200, button_font, text = "hello again", button_event= lambda : res_gold + 1)
+test_button = Button(blue_theme, 115, 10, 100, 200, button_font, True, text= "hello", button_event= test_button2.activate)
 buttons = [test_button, test_button2]
 
 def main():
@@ -47,6 +56,7 @@ def main():
                     else:
                         b.hovered = False
         screen.fill("dark grey")
+        res_list1.draw(screen)
         for b in buttons:
             b.draw(screen)
         pygame.display.update()
