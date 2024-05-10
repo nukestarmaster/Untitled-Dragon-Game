@@ -1,5 +1,6 @@
 import pygame
 from graphics.button import Button, Button_Toggle
+from graphics.button_list import Buttton_List
 from graphics.colour_themes import Button_Theme
 from graphics.res_list import Res_List
 from logic.resource import Resource
@@ -24,8 +25,8 @@ test_surface.fill('Red')
 button_font = pygame.font.Font(None, 36)
 list_font = pygame.font.Font(None, 18)
 
-buttons = []
-prog_buttons = []
+buttons = Buttton_List([], 115, 10, 10)
+prog_buttons = Buttton_List([], 320, 10, 10)
 res_gold = Resource('gold', 100)
 res_potatoes = Resource('potatoes', 10, 0.01)
 res_list1 = Res_List([res_gold, res_potatoes], 5, 5, 100, screen.get_height() - 10, 'grey', list_font, 0, 'black')
@@ -41,8 +42,8 @@ test_button1.button_event = event1
 test_button2.start_event = event2null
 test_button2.progress_event = event2p
 test_button2.finish_event = event2null
-buttons.extend([test_button0, test_button2])
-prog_buttons.extend([test_button2])
+buttons + [test_button0, test_button2]
+prog_buttons + [test_button2]
 
 def main():
     while True:

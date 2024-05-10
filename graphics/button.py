@@ -30,7 +30,7 @@ class Button():
 
     def activate(self):
         if self not in self.parent:
-            self.parent.append(self)
+            self.parent + (self)
 
 class Button_Toggle(Button):
     def __init__(self, colour_theme, rect, font, complete_amount, start_event = None, progress_event = None, finish_event = None, parent = None, text = ''):
