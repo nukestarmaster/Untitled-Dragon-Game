@@ -32,11 +32,11 @@ res_potatoes = Resource('potatoes', 10, 0.01)
 res_list1 = Res_List([res_gold, res_potatoes], 5, 5, 100, screen.get_height() - 10, 'grey', list_font, 0, 'black')
 test_button0 = Button(blue_theme, (115, 10, 200, 100), button_font, parent= buttons, text= "hello", max_activations = 2)
 test_button1 = Button(red_theme, (115, 120, 200, 100), button_font, parent= buttons, text = "hello again")
-test_button2 = Button_Toggle(red_theme, (320, 10, 200, 100), button_font, 100, parent= prog_buttons, text = "progress", max_activations= 1)
+test_button2 = Button_Toggle(red_theme, (320, 10, 200, 100), button_font, 100, progress_tick= 1, parent= prog_buttons, text = "progress", max_activations= 1)
 event0 = Event(lambda : test_button1.activate())
 event1 = Event(lambda : res_gold + 1, cost= [(res_potatoes, 1)])
 event2null = Event(lambda : True)
-event2p = Event(lambda : test_button2.prog(1), cost= [(res_gold, 0.01)])
+event2p = Event(lambda : True, cost= [(res_gold, 0.1)])
 test_button0.finish_event = event0
 test_button1.finish_event = event1
 test_button2.start_event = event2null

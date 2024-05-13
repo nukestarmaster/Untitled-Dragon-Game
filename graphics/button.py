@@ -48,11 +48,12 @@ class Button():
         self.border.update(x - 1, y - 1, w + 2, h + 2)
 
 class Button_Toggle(Button):
-    def __init__(self, colour_theme, rect, font, complete_amount, finish_event = None, start_event = None, progress_event = None, parent = None, text = '', max_activations = None):
+    def __init__(self, colour_theme, rect, font, complete_amount, progress_tick = 0, finish_event = None, start_event = None, progress_event = None, parent = None, text = '', max_activations = None):
         super().__init__(colour_theme, rect, font, parent= parent, text= text, finish_event = finish_event, max_activations = max_activations)
         self.active = False
         self.started = False
         self.complete_amount = complete_amount
+        self.progress_tick = progress_tick
         self.progress = 0
         self.start_event = start_event
         self.progress_event = progress_event
@@ -94,6 +95,7 @@ class Button_Toggle(Button):
             self.active = False
             return
         self.progress_event()
+        self.progress += self.progress_tick
         if self.progress >= self.complete_amount:
             self.finish_event()
             self.progress = 0
