@@ -2,11 +2,14 @@ from typing import Iterable
 
 
 class Buttton_List():
-    def __init__(self, list, x, y, seperation):
+    def __init__(self, list, x, y, w, h, seperation):
         self.list = list
         self.x = x
         self.y = y
+        self.w = w
+        self.h = h
         self.seperation = seperation
+        self.move_buttons()
 
     def __getitem__(self, index):
         return self.list[index]
@@ -26,5 +29,6 @@ class Buttton_List():
         self.list.remove(other)
         return self
     
-    def draw(self):
-        pass
+    def move_buttons(self):
+        for i in range(len(self.list)):
+            self.list[i].move_button(self.x, self.y + (self.h +self.seperation) * i, self.w, self.h)

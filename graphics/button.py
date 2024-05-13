@@ -1,7 +1,7 @@
 import pygame
 
 class Button():
-    def __init__(self, colour_theme, rect, font, button_event = None, parent = None, text = ''):
+    def __init__(self, colour_theme, rect, font, finish_event = None, parent = None, text = '', max_activations = None):
         self.colour_theme = colour_theme
         self.rect = pygame.Rect(rect)
         self.border = pygame.Rect(rect[0] - 2, rect[1] - 2, rect[2] + 4, rect[3] + 4)
@@ -11,11 +11,13 @@ class Button():
         self.parent = parent
         self.text = text
         self.text_image = self.font.render(self.text, 1, self.colour_theme.text)
-        self.button_event = button_event
+        self.finish_event = finish_event
+        self.max_activations = max_activations
+        self.activations = 0
 
     def draw(self, win):
         colour = self.colour_theme.active
-        if not self.button_event.valid():
+        if not self.finish_event.valid():
             colour = self.colour_theme.inactive
         elif self.clicked:
             colour = self.colour_theme.click
@@ -26,22 +28,34 @@ class Button():
         win.blit(self.text_image, self.text_image.get_rect(center = self.rect.center))
 
     def click(self):
-        self.button_event()
+        if self.finish_event.valid():
+            self.finish_event()
+            self.activations += 1
+            if self.max_activations is not None and self.activations >= self.max_activations:
+                self.deactivate()
 
     def activate(self):
         if self not in self.parent:
-            self.parent + (self)
+            self.parent + self
+        self.parent.move_buttons()
+
+    def deactivate(self):
+        self.parent.list.remove(self)
+        self.parent.move_buttons()
+
+    def move_button(self, x, y, w, h):
+        self.rect.update(x, y, w, h)
+        self.border.update(x - 1, y - 1, w + 2, h + 2)
 
 class Button_Toggle(Button):
-    def __init__(self, colour_theme, rect, font, complete_amount, start_event = None, progress_event = None, finish_event = None, parent = None, text = ''):
-        super().__init__(colour_theme, rect, font, parent= parent, text= text)
+    def __init__(self, colour_theme, rect, font, complete_amount, finish_event = None, start_event = None, progress_event = None, parent = None, text = '', max_activations = None):
+        super().__init__(colour_theme, rect, font, parent= parent, text= text, finish_event = finish_event, max_activations = max_activations)
         self.active = False
         self.started = False
         self.complete_amount = complete_amount
         self.progress = 0
         self.start_event = start_event
         self.progress_event = progress_event
-        self.finish_event = finish_event
 
     def draw(self, win):
         colour = self.colour_theme.active
@@ -85,6 +99,9 @@ class Button_Toggle(Button):
             self.progress = 0
             self.active = False
             self.started = False
+            self.activations += 1
+            if self.max_activations is not None and self.activations >= self.max_activations:
+                self.deactivate()
             self.click()
 
     def prog(self, int):
