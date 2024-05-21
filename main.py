@@ -25,27 +25,32 @@ test_surface.fill('Red')
 button_font = pygame.font.Font(None, 36)
 list_font = pygame.font.Font(None, 18)
 
-
-buttons = Buttton_List([], 115, 10, 200, 100, 10)
-prog_buttons = Buttton_List([], 320, 10, 200, 100, 10)
 res_gold = Resource('gold', 100)
 res_potatoes = Resource('potatoes', 10, 0.01)
 res_list1 = Res_List([res_gold, res_potatoes], 5, 5, 100, screen.get_height() - 10, 'grey', list_font, 0, 'black')
+
+buttons = Buttton_List([], 115, 10, 200, 100, 10)
+prog_buttons = Buttton_List([], 320, 10, 200, 100, 10)
+
 test_button0 = Button(blue_theme, (115, 10, 200, 100), button_font, parent= buttons, text= "hello", max_activations = 2)
 test_button1 = Button(red_theme, (115, 120, 200, 100), button_font, parent= buttons, text = "hello again")
 test_button2 = Button_Toggle(red_theme, (320, 10, 200, 100), button_font, 100, progress_tick= 1, parent= prog_buttons, text = "progress", max_activations= 1)
+
 event0 = Event(lambda : test_button1.activate())
 event1 = Event(lambda : res_gold + 1, cost= [(res_potatoes, 1)])
 event2null = Event(lambda : True)
 event2p = Event(lambda : True, cost= [(res_gold, 0.1)])
+
 test_button0.finish_event = event2null
 test_button0.activation_dict = {2: event0}
 test_button1.finish_event = event1
 test_button2.start_event = event2null
 test_button2.progress_event = event2p
 test_button2.finish_event = event2null
+
 buttons + [test_button0]
 prog_buttons + [test_button2]
+
 def allbuttons():
     return buttons.list + prog_buttons.list
 
