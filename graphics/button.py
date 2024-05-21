@@ -1,7 +1,7 @@
 import pygame
 
 class Button():
-    def __init__(self, colour_theme, rect, font, finish_event = None, parent = None, text = '', max_activations = None):
+    def __init__(self, colour_theme, rect, font, finish_event = None, parent = None, text = '', max_activations = None, activation_dict = {}):
         self.colour_theme = colour_theme
         self.rect = pygame.Rect(rect)
         self.border = pygame.Rect(rect[0] - 2, rect[1] - 2, rect[2] + 4, rect[3] + 4)
@@ -27,12 +27,15 @@ class Button():
         pygame.draw.rect(win, colour, self.rect, 0)
         win.blit(self.text_image, self.text_image.get_rect(center = self.rect.center))
 
-    def click(self):
+    def finish(self):
         if self.finish_event.valid():
             self.finish_event()
             self.activations += 1
             if self.max_activations is not None and self.activations >= self.max_activations:
                 self.deactivate()
+
+    def click(self):
+        self.finish()
 
     def activate(self):
         if self not in self.parent:
@@ -97,13 +100,10 @@ class Button_Toggle(Button):
         self.progress_event()
         self.progress += self.progress_tick
         if self.progress >= self.complete_amount:
-            self.finish_event()
+            self.finish()
             self.progress = 0
             self.active = False
             self.started = False
-            self.activations += 1
-            if self.max_activations is not None and self.activations >= self.max_activations:
-                self.deactivate()
             self.click()
 
     def prog(self, int):
