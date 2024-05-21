@@ -25,6 +25,7 @@ test_surface.fill('Red')
 button_font = pygame.font.Font(None, 36)
 list_font = pygame.font.Font(None, 18)
 
+
 buttons = Buttton_List([], 115, 10, 200, 100, 10)
 prog_buttons = Buttton_List([], 320, 10, 200, 100, 10)
 res_gold = Resource('gold', 100)
