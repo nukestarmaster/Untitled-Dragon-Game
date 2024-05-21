@@ -38,7 +38,8 @@ event0 = Event(lambda : test_button1.activate())
 event1 = Event(lambda : res_gold + 1, cost= [(res_potatoes, 1)])
 event2null = Event(lambda : True)
 event2p = Event(lambda : True, cost= [(res_gold, 0.1)])
-test_button0.finish_event = event0
+test_button0.finish_event = event2null
+test_button0.activation_dict = {2: event0}
 test_button1.finish_event = event1
 test_button2.start_event = event2null
 test_button2.progress_event = event2p
@@ -65,6 +66,7 @@ def main():
                     b.clicked = False
                     if b.rect.collidepoint(pos):
                         b.click()
+                        break
             if event.type == pygame.MOUSEMOTION:
                 pos = pygame.mouse.get_pos()
                 for b in allbuttons():

@@ -14,6 +14,7 @@ class Button():
         self.finish_event = finish_event
         self.max_activations = max_activations
         self.activations = 0
+        self.activation_dict = activation_dict
 
     def draw(self, win):
         colour = self.colour_theme.active
@@ -31,6 +32,8 @@ class Button():
         if self.finish_event.valid():
             self.finish_event()
             self.activations += 1
+            if self.activations in self.activation_dict:
+                self.activation_dict[self.activations]()
             if self.max_activations is not None and self.activations >= self.max_activations:
                 self.deactivate()
 
