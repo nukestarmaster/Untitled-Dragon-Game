@@ -1,7 +1,9 @@
 import pygame
 
+from logic.event import Event
+
 class Button():
-    def __init__(self, colour_theme, rect, font, finish_event = None, parent = None, text = '', max_activations = None, activation_dict = {}):
+    def __init__(self, colour_theme, rect, font, finish_event = Event(), parent = None, text = '', max_activations = None, activation_dict = {}):
         self.colour_theme = colour_theme
         self.rect = pygame.Rect(rect)
         self.border = pygame.Rect(rect[0] - 2, rect[1] - 2, rect[2] + 4, rect[3] + 4)
@@ -54,7 +56,7 @@ class Button():
         self.border.update(x - 1, y - 1, w + 2, h + 2)
 
 class Button_Toggle(Button):
-    def __init__(self, colour_theme, rect, font, complete_amount, progress_tick = 0, finish_event = None, start_event = None, progress_event = None, parent = None, text = '', max_activations = None):
+    def __init__(self, colour_theme, rect, font, complete_amount, progress_tick = 0, finish_event = Event(), start_event = Event(), progress_event = Event(), parent = None, text = '', max_activations = None):
         super().__init__(colour_theme, rect, font, parent= parent, text= text, finish_event = finish_event, max_activations = max_activations)
         self.active = False
         self.started = False
